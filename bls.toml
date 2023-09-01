@@ -1,9 +1,10 @@
 name = "heimdall-poc"
 version = "1.0.0"
+content_type = "json"
 
 [deployment]
-permission = "public"
 nodes = 1
+permissions = ["https://sepolia.infura.io"]
 
 [build]
 dir = "build"

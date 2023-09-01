@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"license": "MIT",
+	"scripts": {
+		"test": "npx hardhat test",
+		"node": "npx hardhat node --watch",
+		"format": "prettier --check 'src/**/*.sol'",
+		"format:fix": "prettier --write 'src/**/*.sol'"
+	},
 	"devDependencies": {
 		"@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
 		"@nomicfoundation/hardhat-ethers": "^3.0.0",
