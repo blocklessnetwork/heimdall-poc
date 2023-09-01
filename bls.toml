@@ -1,0 +1,16 @@
+name = "heimdall-poc"
+version = "1.0.0"
+
+[deployment]
+permission = "public"
+nodes = 1
+
+[build]
+dir = "build"
+entry = "heimdall-poc_debug.wasm"
+command = "npm run build:debug"
+
+[build_release]
+dir = "build"
+entry = "heimdall-poc.wasm"
+command = "npm run build:release"
