@@ -9,9 +9,9 @@ permissions = ["https://sepolia.infura.io"]
 [build]
 dir = "build"
 entry = "heimdall-poc_debug.wasm"
-command = "npm run build:debug"
+command = "yarn run build:debug"
 
 [build_release]
 dir = "build"
 entry = "heimdall-poc.wasm"
-command = "npm run build:release"
+command = "yarn run build:release"
