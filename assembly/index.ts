@@ -1,5 +1,5 @@
 import { http, json } from '@blockless/sdk'
-import { GenerateTxCertificate } from './methods/generate'
+import { GenerateTxCertificate } from './tasks/generate'
 import Env from './utils/env'
 
 Env.initalize()
@@ -23,10 +23,16 @@ http.HttpComponent.serve((req: http.Request) => {
 			reqBody.has('params'))
 		) {
 			const params = reqBody.getArr('params')!._arr
-			const instance = new GenerateTxCertificate(params)
+			const task = new GenerateTxCertificate(params)
+			const result = task.getResult()
 
-			body.set('id', reqBody.getInteger('id'))
-			body.set('result', instance.getResult())
+			if (result.error === null && result.value !== null) {
+				body.set('id', reqBody.getInteger('id'))
+				body.set('result', result.value)
+			} else {
+				body.set('id', reqBody.getInteger('id'))
+				body.set('error', result.error || 'Something went wrong.')
+			}
 		} else {
 			body.set('error', 'Invalid Request.')
 		}

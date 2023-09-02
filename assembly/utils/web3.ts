@@ -9,10 +9,6 @@ import { u128 } from 'as-bignum/assembly'
 export class Web3 {
 	private httpClient: http.Client
 
-	/**
-	 * Initialize an instance of Redis Storage
-	 *
-	 */
 	constructor() {
 		const httpClientHeaders = new Map<string, string>()
 		httpClientHeaders.set('Content-Type', 'application/json')
@@ -28,7 +24,7 @@ export class Web3 {
 	}
 
 	/**
-	 * Make an RPC call
+	 * Make an RPC call to the Web3 endpoint
 	 *
 	 * @param id
 	 * @param method
@@ -38,7 +34,7 @@ export class Web3 {
 
 		const request = new json.JSON.Obj()
 
-		request.set('id', 1)
+		request.set('id', i32(id))
 		request.set('jsonrpc', '2.0')
 		request.set('method', method)
 		request.set('params', [])
