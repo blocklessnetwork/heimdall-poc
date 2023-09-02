@@ -1,0 +1,9 @@
+{
+	"name": "extension-sig-verify",
+	"version": "1.0.0",
+	"tasks": {
+		"dev": "deno run --watch main.ts",
+		"build": "deno compile --allow-all --output=./build/extension-sig-verify main.ts",
+		"publish": "cp ./build/extension-sig-verify $HOME/.bls/extensions"
+	}
+}
