@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"license": "APACHE-2.0",
 	"scripts": {
-		"start": "nodemon --watch ./assembly --ext ts,json --exec ./run.sh",
+		"dev": "nodemon --watch ./assembly --ext ts,json --exec ./run.sh",
 		"clean": "rm -rf build",
 		"build:release": "npm run clean; asc assembly/index.ts --target release",
 		"build:debug": "npm run clean; asc assembly/index.ts --target debug",
