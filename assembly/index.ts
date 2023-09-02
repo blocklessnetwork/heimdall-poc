@@ -1,5 +1,8 @@
 import { http, json } from '@blockless/sdk'
 import { GenerateTxCertificate } from './methods/generate'
+import Env from './utils/env'
+
+Env.initalize()
 
 /**
  * Fetch sample JSON content and serve.
