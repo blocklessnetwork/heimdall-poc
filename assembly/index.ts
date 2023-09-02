@@ -1,5 +1,5 @@
 import { http, json } from '@blockless/sdk'
-import { generateComplianceCertificate } from './generate'
+import { GenerateTxCertificate } from './methods/generate'
 
 /**
  * Fetch sample JSON content and serve.
@@ -20,10 +20,10 @@ http.HttpComponent.serve((req: http.Request) => {
 			reqBody.has('params'))
 		) {
 			const params = reqBody.getArr('params')!._arr
-			const result = generateComplianceCertificate(params)
+			const instance = new GenerateTxCertificate(params)
 
 			body.set('id', reqBody.getInteger('id'))
-			body.set('result', result)
+			body.set('result', instance.getResult())
 		} else {
 			body.set('error', 'Invalid Request.')
 		}
