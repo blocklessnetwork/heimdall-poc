@@ -1,11 +1,12 @@
+import Env from './utils/env'
 import { http, json } from '@blockless/sdk'
 import { GenerateTxCertificate } from './tasks/generate'
-import Env from './utils/env'
 
+// Initialize and load environment variables in memory
 Env.initalize()
 
 /**
- * Fetch sample JSON content and serve.
+ * Create and serve the RPC JSON endpoint.
  *
  */
 http.HttpComponent.serve((req: http.Request) => {

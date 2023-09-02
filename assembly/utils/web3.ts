@@ -18,6 +18,11 @@ export class Web3 {
 		this.httpClient = new http.Client(httpClientOptions)
 	}
 
+	/**
+	 * Get the latest block number
+	 *
+	 * @returns
+	 */
 	getBlock(): u128 {
 		let value = this.rpcCall(1, 'eth_blockNumber')
 		return u128.from(value)
