@@ -1,21 +1,36 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract GuardianRegistry {
-	struct Guardian {
-		address publicKey;
-		bytes32 privateKey;
-	}
+struct Guardian {
+	address publicKey;
+	bytes32 privateKey;
+}
 
-	mapping(address => Guardian) public guardians;
+contract GuardianRegistry {
+	string public name;
+	string public description;
+
+	mapping(address => Guardian) guardians;
+	address public owner;
 
 	event GuardianAdded(address indexed guardianAddress);
 	event GuardianRemoved(address indexed guardianAddress);
 
+	modifier onlyOwner() {
+		require(msg.sender == owner, 'Only the owner can call this function');
+		_;
+	}
+
+	constructor(string memory _name, string memory _description) {
+		owner = msg.sender;
+		name = _name;
+		description = _description;
+	}
+
 	// Add a new guardian
-	function addGuardian(address _guardianAddress, bytes32 _privateKey) external {
-		require(_guardianAddress != address(0), 'Guardian address cannot be zero address');
-		require(guardians[_guardianAddress].publicKey != address(0), 'Guardian already exists');
+	function addGuardian(address _guardianAddress, bytes32 _privateKey) external onlyOwner {
+		require(_guardianAddress != address(0), 'Guardian address cannot be the zero address');
+		require(guardians[_guardianAddress].publicKey == address(0), 'Guardian already exists');
 
 		guardians[_guardianAddress] = Guardian({
 			publicKey: _guardianAddress,
@@ -26,17 +41,15 @@ contract GuardianRegistry {
 	}
 
 	// Remove a guardian
-	function removeGuardian(address _guardianAddress) external {
+	function removeGuardian(address _guardianAddress) external onlyOwner {
 		require(guardians[_guardianAddress].publicKey != address(0), 'Guardian does not exist');
 
 		delete guardians[_guardianAddress];
 		emit GuardianRemoved(_guardianAddress);
 	}
 
-	// Fetch a guardian's details
-	function getGuardian(address _guardianAddress) external view returns (address, bytes32) {
-		Guardian storage guardian = guardians[_guardianAddress];
-		require(guardian.publicKey != address(0), 'Guardian does not exist');
-		return (guardian.publicKey, guardian.privateKey);
+	// Check if an address is a guardian
+	function isGuardian(address _address) external view returns (bool) {
+		return guardians[_address].publicKey != address(0);
 	}
 }

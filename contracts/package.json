@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"test": "npx hardhat test",
-		"node": "npx hardhat node --watch",
+		"node": "npx hardhat node",
 		"format": "prettier --check 'src/**/*.sol'",
 		"format:fix": "prettier --write 'src/**/*.sol'"
 	},

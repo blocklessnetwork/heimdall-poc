@@ -27,4 +27,9 @@ contract CompliancePolicy is ICompliancePolicy {
 
 		complianceRequirements = ComplianceRequirements({blockOfacAssets: _blockOfacAssets});
 	}
+
+	// Getter function to check the value of blockOfacAssets
+	function isBlockOfacAssetsEnabled() external view returns (bool) {
+		return complianceRequirements.blockOfacAssets;
+	}
 }
