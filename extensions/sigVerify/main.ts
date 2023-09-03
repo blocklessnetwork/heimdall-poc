@@ -4,13 +4,13 @@ import { CGIExtension } from 'https://deno.land/x/bls_runtime_extension@v0.0.2/m
 async function main() {
 	// Create the CGI Runtime Extension
 	const sigVerify = new CGIExtension({
-		name: 'heimdall-sig-verify',
+		name: 'extension-sig-verify',
 		alias: 'sigverify',
 		description: 'Signature and Verification extension for Heimdall'
 	})
 
 	// Export methods to runtime
-	sigVerify.export('sign', async ([message, privateKey]) => {
+	sigVerify.export('signBls', async ([message, privateKey]) => {
 		// TODO: Explore multi signature signing
 		const publicKey = bls.getPublicKey(privateKey)
 		const signature = await bls.sign(message, privateKey)
