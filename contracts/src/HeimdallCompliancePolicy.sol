@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface ICompliancePolicy {
-	struct ComplianceRequirements {
-		bool blockOfacAssets;
-	}
-}
+import './interfaces/IHeimdallCompliancePolicy.sol';
 
-contract CompliancePolicy is ICompliancePolicy {
+contract CompliancePolicy is IHeimdallCompliancePolicy {
 	string public name;
 	string public version;
 	address public policyCreator;

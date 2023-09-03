@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '../ComplianceVerifier.sol';
+import '../HeimdallCompliant.sol';
 
-contract Sample is ComplianceVerifier {
+contract SampleSwap is HeimdallCompliant {
 	event SwapEvent(address indexed from, address indexed to, uint256 amount);
 
-	constructor(address guardianRegistry) ComplianceVerifier(guardianRegistry) {}
+	constructor(address guardianRegistry) HeimdallCompliant(guardianRegistry) {}
 
 	function swap(address from, address to, uint256 amount) external {
 		_swap(from, to, amount);
@@ -16,7 +16,7 @@ contract Sample is ComplianceVerifier {
 		address from,
 		address to,
 		uint256 amount,
-		Certificate memory certificate
+		ComplianceCertificate memory certificate
 	) external {
 		require(this.verifyCertificate(certificate), 'Invalid certificate');
 		_swap(from, to, amount);

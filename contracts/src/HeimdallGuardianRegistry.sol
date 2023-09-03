@@ -1,19 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-struct Guardian {
-	address publicKey;
-}
+import './interfaces/IHeimdallGuardianRegistry.sol';
 
-contract GuardianRegistry {
+contract HeimdallGuardianRegistry is IHeimdallGuardianRegistry {
 	string public name;
 	string public description;
 	address public owner;
 
-	mapping(address => Guardian) guardians;
+	struct Guardian {
+		address publicKey;
+	}
 
-	event GuardianAdded(address indexed guardianAddress);
-	event GuardianRemoved(address indexed guardianAddress);
+	mapping(address => Guardian) guardians;
 
 	modifier onlyOwner() {
 		require(msg.sender == owner, 'Only the owner can call this function');
