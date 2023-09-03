@@ -3,15 +3,14 @@ pragma solidity ^0.8.0;
 
 struct Guardian {
 	address publicKey;
-	bytes32 privateKey;
 }
 
 contract GuardianRegistry {
 	string public name;
 	string public description;
+	address public owner;
 
 	mapping(address => Guardian) guardians;
-	address public owner;
 
 	event GuardianAdded(address indexed guardianAddress);
 	event GuardianRemoved(address indexed guardianAddress);
@@ -28,14 +27,11 @@ contract GuardianRegistry {
 	}
 
 	// Add a new guardian
-	function addGuardian(address _guardianAddress, bytes32 _privateKey) external onlyOwner {
+	function addGuardian(address _guardianAddress) external onlyOwner {
 		require(_guardianAddress != address(0), 'Guardian address cannot be the zero address');
 		require(guardians[_guardianAddress].publicKey == address(0), 'Guardian already exists');
 
-		guardians[_guardianAddress] = Guardian({
-			publicKey: _guardianAddress,
-			privateKey: _privateKey
-		});
+		guardians[_guardianAddress] = Guardian({publicKey: _guardianAddress});
 
 		emit GuardianAdded(_guardianAddress);
 	}
