@@ -1,6 +1,6 @@
 import Env from './utils/env'
 import { http, json } from '@blockless/sdk'
-import { GenerateTxCertificate } from './tasks/generate'
+import { GenerateCertificate } from './tasks/generate'
 
 // Initialize and load environment variables in memory
 Env.initalize()
@@ -24,7 +24,7 @@ http.HttpComponent.serve((req: http.Request) => {
 			reqBody.has('params'))
 		) {
 			const params = reqBody.getArr('params')!._arr
-			const task = new GenerateTxCertificate(params)
+			const task = new GenerateCertificate(params)
 			const result = task.getResult()
 
 			if (result.error === null && result.value !== null) {

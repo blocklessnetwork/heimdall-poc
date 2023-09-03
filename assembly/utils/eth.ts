@@ -15,7 +15,7 @@ export class RawTransaction {
 		public data: Bytes
 	) {}
 
-	static fromJson(data: json.JSON.Obj): RawTransaction {
+	static fromJSON(data: json.JSON.Obj): RawTransaction {
 		return new RawTransaction(
 			data.getInteger('chainId')!._num,
 			data.getInteger('nonce')!._num,
@@ -24,5 +24,16 @@ export class RawTransaction {
 			data.getString('value') ? u128.from(data.getString('value')!._str) : null,
 			data.getString('value')!._str
 		)
+	}
+
+	toJSON(): json.JSON.Obj {
+		const response = new json.JSON.Obj()
+		response.set('chainId', this.chainId)
+		response.set('nonce', this.nonce)
+		response.set('from', this.from)
+		response.set('to', this.to)
+		response.set('value', this.value ? this.value!.toString() : '')
+		response.set('data', this.data)
+		return response
 	}
 }
