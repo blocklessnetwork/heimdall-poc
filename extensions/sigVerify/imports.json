@@ -1,6 +1,6 @@
 {
-  "imports": {
-    "crypto": "https://deno.land/std@0.119.0/node/crypto.ts",
-    "https://deno.land/x/bls12_381@1.4.0/math.js": "https://deno.land/x/bls12_381@1.4.0/math.ts"
-  }
+	"imports": {
+		"crypto": "https://deno.land/std@0.119.0/node/crypto.ts",
+		"https://deno.land/x/bls12_381@1.4.0/math.js": "https://deno.land/x/bls12_381@1.4.0/math.ts"
+	}
 }

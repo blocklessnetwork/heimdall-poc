@@ -6,7 +6,7 @@ const SANCTIONED_ADDRESSES = 'bafkreifu2cna6tlzebhg2rtw6pvzvn7u6pctg55a6nn2o6mq2
 
 /**
  * Compliance requirement task to check for Blocked Ofac Assets
- * 
+ *
  */
 export class RequirementBlockOfacAssets {
 	private isCompliant: bool | null = null

@@ -6,7 +6,7 @@ const EXTENSION_NAME = 'sigverify'
 
 /**
  * Sign a message hash with the bls signature
- * 
+ *
  * @param messageHash
  * @param privateKey
  * @returns

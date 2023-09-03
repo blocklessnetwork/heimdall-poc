@@ -1,4 +1,4 @@
-import { cgi } from "@blockless/sdk"
+import { cgi } from '@blockless/sdk'
 
 export function isExtensionAvailable(alias: string): boolean {
 	let extensions = cgi.cgiExtendsList()

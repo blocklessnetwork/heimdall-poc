@@ -25,4 +25,3 @@ Follow the [README.md](./extensions/README.md) on Extensions
 ### Contracts
 
 Follow the [README.md](./contracts/README.md) on Contracts
-
