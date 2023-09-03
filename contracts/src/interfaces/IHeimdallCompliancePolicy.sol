@@ -2,9 +2,11 @@
 pragma solidity ^0.8.0;
 
 interface IHeimdallCompliancePolicy {
-	struct ComplianceRequirements {
-		bool blockOfacAssets;
+	enum ComplianceRequirement {
+		BlockOfacAssets
 	}
+	
+	function getRequirements() external view returns (ComplianceRequirement[] memory);
 
-	function isBlockOfacAssetsEnabled() external view returns (bool);
+	function isRequirement(ComplianceRequirement) external view returns (bool);
 }
