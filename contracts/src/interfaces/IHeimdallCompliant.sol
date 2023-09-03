@@ -5,7 +5,6 @@ interface IHeimdallCompliant {
 	struct ComplianceCertificate {
 		bool compliant;
 		address senderAddress;
-		uint256 senderAddressNonce;
 		address destAddress;
 		string timestamp;
 		address guardian;

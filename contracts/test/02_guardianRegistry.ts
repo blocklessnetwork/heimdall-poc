@@ -3,7 +3,7 @@ import { ethers } from 'hardhat'
 import { expect } from 'chai'
 import { HeimdallGuardianRegistry } from '../typechain-types'
 
-describe('GuardianRegistry', function () {
+describe('HeimdallGuardianRegistry', function () {
 	let guardianRegistry: HeimdallGuardianRegistry
 
 	beforeEach(async function () {

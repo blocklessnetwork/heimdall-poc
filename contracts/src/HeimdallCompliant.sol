@@ -6,7 +6,7 @@ import './interfaces/IHeimdallGuardianRegistry.sol';
 
 abstract contract HeimdallCompliant is IHeimdallCompliant {
 	address[] private policies;
-	IHeimdallGuardianRegistry guardianRegistry;
+	IHeimdallGuardianRegistry public guardianRegistry;
 	address public owner;
 
 	constructor(address _guardianRegistryAddress) {
