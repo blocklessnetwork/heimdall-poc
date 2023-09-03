@@ -5,7 +5,7 @@ import { CompliancePolicy } from '../typechain-types'
 describe('CompliancePolicy', function () {
 	let compliancePolicy: CompliancePolicy
 
-	before(async () => {
+	beforeEach(async () => {
 		const contractFactory = await hre.ethers.getContractFactory('CompliancePolicy')
 		compliancePolicy = await contractFactory.deploy('Sample Policy', '1.0', true)
 	})
