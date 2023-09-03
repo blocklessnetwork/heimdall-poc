@@ -29,6 +29,74 @@ export class Web3 {
 	}
 
 	/**
+	 * Check if a contract is Heimdall compliant
+	 *
+	 * @param contract
+	 * @returns
+	 */
+	isHeimdallCompliant(contract: string): bool {
+		if (!this.httpClient) return false
+
+		const request = new json.JSON.Obj()
+
+		request.set('id', i32(1))
+		request.set('jsonrpc', '2.0')
+		request.set('method', 'eth_call')
+		request.set('params', [{ data: '0x40bd1b7e', to: contract }])
+
+		const data = new http.Client().post(``, request.stringify())
+		const result = data.getString('result')!._str
+
+		return result === 'true'
+	}
+
+	/**
+	 * Fetch heimdall compliance policies for a given contract
+	 *
+	 * @param contract
+	 * @returns
+	 */
+	getHeimdallPolicies(contract: string): string[] {
+		if (!this.httpClient) return []
+
+		const request = new json.JSON.Obj()
+
+		request.set('id', i32(1))
+		request.set('jsonrpc', '2.0')
+		request.set('method', 'eth_call')
+		request.set('params', [{ data: '0x3b04f6f1', to: contract }])
+
+		const data = new http.Client().post(``, request.stringify())
+		const result = data.getString('result')!._str
+		// TODO Parse response
+
+		return []
+	}
+
+	/**
+	 * Fetch heimdall compliance policy requirements
+	 *
+	 * @param contract
+	 * @returns
+	 */
+	getHeimdallPolicyRequirements(contract: string): u8[] {
+		if (!this.httpClient) return []
+
+		const request = new json.JSON.Obj()
+
+		request.set('id', i32(1))
+		request.set('jsonrpc', '2.0')
+		request.set('method', 'eth_call')
+		request.set('params', [{ data: '0x7ae42ff9', to: contract }])
+
+		const data = new http.Client().post(``, request.stringify())
+		const result = data.getString('result')!._str
+		// TODO Parse response
+
+		return []
+	}
+
+	/**
 	 * Make an RPC call to the Web3 endpoint
 	 *
 	 * @param id
