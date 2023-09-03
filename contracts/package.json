@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "npx hardhat test",
 		"hardhat": "npx hardhat node",
+		"deploy": "npx hardhat run --network localhost scripts/deploy.ts",
 		"format": "prettier --check 'src/**/*.sol'",
 		"format:fix": "prettier --write 'src/**/*.sol'"
 	},
