@@ -16,6 +16,8 @@ export class RawTransaction {
 	) {}
 
 	static fromJSON(data: json.JSON.Obj): RawTransaction {
+		// Tx Validation
+
 		return new RawTransaction(
 			data.getInteger('chainId')!._num,
 			data.getInteger('nonce')!._num,

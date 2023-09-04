@@ -35,7 +35,7 @@ export class Web3 {
 	 * @param contract
 	 * @returns
 	 */
-	isHeimdallCompliant(contract: string): bool {
+	isHeimdallCompliant(contract: string): boolean {
 		if (!this.httpClient) return false
 
 		let isCompliant = false

@@ -11,10 +11,10 @@ const EXTENSION_NAME = 'sigverify'
  * @param privateKey
  * @returns
  */
-function signBls(messageHash: string, privateKey: string): string | boolean {
-	if (!isExtensionAvailable(EXTENSION_NAME)) return false
+export function signBls(messageHash: string, privateKey: string): string {
+	if (!isExtensionAvailable(EXTENSION_NAME)) return '0x'
 
-	let response: string | boolean = false
+	let response: string = '0x'
 	let command = new cgi.CgiCommand(EXTENSION_NAME, [messageHash, privateKey], [])
 	let rs = command.exec()
 
@@ -23,5 +23,6 @@ function signBls(messageHash: string, privateKey: string): string | boolean {
 	}
 
 	command.close()
+
 	return response
 }

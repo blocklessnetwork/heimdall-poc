@@ -1,5 +1,5 @@
-import { json, http } from '@blockless/sdk'
-import { TaskResult } from '..'
+import { http } from '@blockless/sdk'
+import { ComplianceRequirementTaskResult } from '.'
 
 // Source File
 const SANCTIONED_ADDRESSES = 'bafkreifu2cna6tlzebhg2rtw6pvzvn7u6pctg55a6nn2o6mq2tyeqxnahe'
@@ -9,7 +9,7 @@ const SANCTIONED_ADDRESSES = 'bafkreifu2cna6tlzebhg2rtw6pvzvn7u6pctg55a6nn2o6mq2
  *
  */
 export class RequirementBlockOfacAssets {
-	private isCompliant: bool | null = null
+	private isCompliant: boolean
 
 	constructor(address: string) {
 		const response = new http.Client().get(`https://dweb.link/api/v0/cat/${SANCTIONED_ADDRESSES}`)
@@ -32,13 +32,11 @@ export class RequirementBlockOfacAssets {
 	 *
 	 * @returns
 	 */
-	getResult(): TaskResult<json.JSON.Obj> {
-		const result = new TaskResult<json.JSON.Obj>()
+	getResult(): ComplianceRequirementTaskResult {
+		const result = new ComplianceRequirementTaskResult()
 
-		if (this.isCompliant !== null) {
-			const response = new json.JSON.Obj()
-			response.set('isCompliant', this.isCompliant)
-			result.value = response
+		if (this.isCompliant === true || this.isCompliant === false) {
+			result.value = this.isCompliant
 		} else {
 			result.error = 'Unable to validate Blocked Ofac Assets'
 		}
