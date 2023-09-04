@@ -84,9 +84,9 @@ export class GenerateCertificate {
 		// Build certificate
 		this.certificate = new ComplianceCertificate(this.isCompliant, this.tx.from, this.tx.to)
 
-		// TODO: Add valid ABIs and data parser here
+		// Add valid data hash if a certificate exists
 		if (this.certificate) {
-			this.tx.data = this.certificate!.getHash()
+			this.tx.data = this.tx.data + this.certificate!.getDataHash()
 		}
 	}
 

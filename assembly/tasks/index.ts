@@ -1,5 +1,7 @@
+import { json } from '@blockless/sdk'
 import Env from '../utils/env'
 import { signBls } from '../utils/sigVerify'
+import { abiEncodePacked } from '../utils/eth'
 
 export class TaskResult<T> {
 	value: T | null = null
@@ -14,7 +16,7 @@ export class ComplianceCertificate {
 	private timestamp: string
 
 	private guardian: string
-	private signature: string = '0x'
+	private signature: string = ''
 
 	constructor(isCompliant: boolean, senderAddress: string, destAddress: string) {
 		this.isCompliant = isCompliant
@@ -28,8 +30,13 @@ export class ComplianceCertificate {
 	}
 
 	private getMessageHash(): string {
-		// TODO: Create message hash for the compliance certificate
-		return '0x'
+		const values: json.JSON.Value[] = []
+		values.push(json.JSON.from(this.isCompliant))
+		values.push(json.JSON.from(this.senderAddress))
+		values.push(json.JSON.from(this.destAddress))
+		values.push(json.JSON.from(this.timestamp))
+
+		return `0x${abiEncodePacked(values)}`
 	}
 
 	sign(): string {
@@ -40,7 +47,15 @@ export class ComplianceCertificate {
 		return signature
 	}
 
-	getHash(): string {
-		return '0x'
+	getDataHash(): string {
+		const values: json.JSON.Value[] = []
+		values.push(json.JSON.from(this.isCompliant))
+		values.push(json.JSON.from(this.senderAddress))
+		values.push(json.JSON.from(this.destAddress))
+		values.push(json.JSON.from(this.timestamp))
+		values.push(json.JSON.from(this.guardian))
+		values.push(json.JSON.from(this.signature))
+
+		return `0x${abiEncodePacked(values)}`
 	}
 }

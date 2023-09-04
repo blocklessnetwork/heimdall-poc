@@ -39,3 +39,36 @@ export class RawTransaction {
 		return response
 	}
 }
+
+export function abiEncodePacked(args: json.JSON.Value[]): string {
+	let encodedData = ''
+
+	function toHex(value: string): string {
+		let hex = ''
+		for (let i = 0; i < value.length; i++) {
+			hex += value.charCodeAt(i).toString(16).padStart(2, '0')
+		}
+		return hex
+	}
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i]
+
+		if (arg.isString) {
+			const hexString = toHex((arg as json.JSON.Str)._str)
+			const length = hexString.length / 2
+			// encodedData +=  // Encode length as a hexadecimal byte
+			encodedData += (length.toString(16) + hexString).padStart(64, '0')
+		} else if (arg.isNum || arg.isInteger) {
+			const hexValue = (arg as json.JSON.Integer)._num.toString(16).padStart(64, '0')
+			encodedData += hexValue
+		} else if (arg.isBool) {
+			const hexValue = arg ? '01' : '00'
+			encodedData += hexValue.padStart(64, '0')
+		} else {
+			throw new Error(`Unsupported type: ${typeof arg}`)
+		}
+	}
+
+	return encodedData
+}
