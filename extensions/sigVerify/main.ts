@@ -10,13 +10,13 @@ async function main() {
 	})
 
 	// Export methods to runtime
-	sigVerify.export('signBls', async ([message, privateKey]) => {
+	sigVerify.export('signBls', async (message: string, privateKey: string) => {
 		// TODO: Explore multi signature signing
 		const publicKey = bls.getPublicKey(privateKey)
 		const signature = await bls.sign(message, privateKey)
 		const isValid = await bls.verify(signature, message, publicKey)
 
-		return isValid ? new TextDecoder().decode(signature) : false
+		return isValid ? bls.utils.bytesToHex(signature) : false
 	})
 
 	// Execute and listen to incoming readable stream
