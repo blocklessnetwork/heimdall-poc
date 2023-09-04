@@ -22,7 +22,7 @@ async function main() {
 		[true]
 	])
 	await compliancePolicy.waitForDeployment()
-	console.log('Compliance policy deployed!')
+	console.log('Compliance policy deployed!', await compliancePolicy.getAddress())
 
 	console.log('\n---------\n')
 
@@ -32,6 +32,11 @@ async function main() {
 		await guardianRegistry.getAddress()
 	])
 	await swapCompliantProtocol.waitForDeployment()
+	console.log('Sample swap deployed!', await swapCompliantProtocol.getAddress())
+
+	// Add policies
+	await swapCompliantProtocol.setPolicies([await compliancePolicy.getAddress()])
+
 	console.log('Sample swap deployed!')
 }
 

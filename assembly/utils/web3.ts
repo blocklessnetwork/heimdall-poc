@@ -25,6 +25,7 @@ export class Web3 {
 	 */
 	getBlock(): u128 {
 		let value = this.rpcCall(1, 'eth_blockNumber')
+
 		return u128.from(value)
 	}
 
@@ -37,17 +38,32 @@ export class Web3 {
 	isHeimdallCompliant(contract: string): bool {
 		if (!this.httpClient) return false
 
-		const request = new json.JSON.Obj()
+		let isCompliant = false
 
-		request.set('id', i32(1))
+		const request = new json.JSON.Obj()
+		const params = new json.JSON.Obj()
+		const paramsList = new json.JSON.Arr()
+
+		params.set('data', '0x40bd1b7e')
+		params.set('to', contract)
+
+		paramsList.push(params)
+		paramsList.push(json.JSON.from('latest'))
+
+		request.set('id', i32(2))
 		request.set('jsonrpc', '2.0')
 		request.set('method', 'eth_call')
-		request.set('params', [{ data: '0x40bd1b7e', to: contract }])
+		request.set('params', paramsList)
 
-		const data = new http.Client().post(``, request.stringify())
-		const result = data.getString('result')!._str
+		const response = this.httpClient.post('', request.stringify())
+		const result = response.getString('result')
 
-		return result === 'true'
+		if (result) {
+			let pos = 2
+			isCompliant = u128.fromString(result._str.slice(pos, (pos += 64)), 16) === u128.from(1)
+		}
+
+		return isCompliant
 	}
 
 	/**
@@ -59,18 +75,38 @@ export class Web3 {
 	getHeimdallPolicies(contract: string): string[] {
 		if (!this.httpClient) return []
 
+		let policies: string[] = []
+
 		const request = new json.JSON.Obj()
+		const params = new json.JSON.Obj()
+		const paramsList = new json.JSON.Arr()
+
+		params.set('data', '0x3b04f6f1')
+		params.set('to', contract)
+
+		paramsList.push(params)
+		paramsList.push(json.JSON.from('latest'))
 
 		request.set('id', i32(1))
 		request.set('jsonrpc', '2.0')
 		request.set('method', 'eth_call')
-		request.set('params', [{ data: '0x3b04f6f1', to: contract }])
+		request.set('params', paramsList)
 
-		const data = new http.Client().post(``, request.stringify())
-		const result = data.getString('result')!._str
-		// TODO Parse response
+		const data = this.httpClient.post(``, request.stringify())
+		const result = data.getString('result')
 
-		return []
+		if (result) {
+			let pos = 2
+			const _ = u128.fromString(result._str.slice(pos, (pos += 64)), 16)
+			const noItems = u128.fromString(result._str.slice(pos, (pos += 64)), 16)
+
+			for (let i = 0; i < noItems.toI32(); i++) {
+				const address = `0x${result._str.slice(pos, (pos += 64)).slice(-40)}`
+				policies.push(address.toString())
+			}
+		}
+
+		return policies
 	}
 
 	/**
@@ -79,21 +115,41 @@ export class Web3 {
 	 * @param contract
 	 * @returns
 	 */
-	getHeimdallPolicyRequirements(contract: string): u8[] {
+	getHeimdallPolicyRequirements(contract: string): i32[] {
 		if (!this.httpClient) return []
 
+		let requirements: i32[] = []
+
 		const request = new json.JSON.Obj()
+		const params = new json.JSON.Obj()
+		const paramsList = new json.JSON.Arr()
+
+		params.set('data', '0x7ae42ff9')
+		params.set('to', contract)
+
+		paramsList.push(params)
+		paramsList.push(json.JSON.from('latest'))
 
 		request.set('id', i32(1))
 		request.set('jsonrpc', '2.0')
 		request.set('method', 'eth_call')
-		request.set('params', [{ data: '0x7ae42ff9', to: contract }])
+		request.set('params', paramsList)
 
-		const data = new http.Client().post(``, request.stringify())
-		const result = data.getString('result')!._str
-		// TODO Parse response
+		const data = this.httpClient.post(``, request.stringify())
+		const result = data.getString('result')
 
-		return []
+		if (result) {
+			let pos = 2
+			const _ = u128.fromString(result._str.slice(pos, (pos += 64)), 16)
+			const noItems = u128.fromString(result._str.slice(pos, (pos += 64)), 16)
+
+			for (let i = 0; i < noItems.toI32(); i++) {
+				const id = u128.fromString(result._str.slice(pos, (pos += 64)), 16)
+				requirements.push(id.toI32())
+			}
+		}
+
+		return requirements
 	}
 
 	/**

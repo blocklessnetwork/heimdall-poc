@@ -4,7 +4,11 @@ content_type = "json"
 
 [deployment]
 nodes = 1
-permissions = ["https://sepolia.infura.io", "https://dweb.link"]
+permissions = [
+  "https://sepolia.infura.io",
+  "https://dweb.link",
+  "http://127.0.0.1"
+]
 
 [build]
 dir = "build"
