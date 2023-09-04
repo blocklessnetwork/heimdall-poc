@@ -4,7 +4,7 @@ import { CGIExtension } from 'https://deno.land/x/bls_runtime_extension@v0.0.2/m
 async function main() {
 	// Create the CGI Runtime Extension
 	const sigVerify = new CGIExtension({
-		name: 'extension-sig-verify',
+		name: 'sigverify',
 		alias: 'sigverify',
 		description: 'Signature and Verification extension for Heimdall'
 	})
