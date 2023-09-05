@@ -30,7 +30,10 @@ export class GenerateCertificate {
 	 * @returns
 	 */
 	validate(): void {
-		if (!this.tx) return
+		if (!this.tx) {
+			this.error = 'Invalid Tx'
+			return
+		}
 
 		const targetContract = this.tx.to
 		const isHeimdall = this.web3.isHeimdallCompliant(targetContract)
@@ -98,7 +101,7 @@ export class GenerateCertificate {
 	getResult(): TaskResult<json.JSON.Obj> {
 		const result = new TaskResult<json.JSON.Obj>()
 
-		if (result.error) {
+		if (this.error) {
 			result.error = this.error
 		} else {
 			result.value = this.tx.toJSON()
