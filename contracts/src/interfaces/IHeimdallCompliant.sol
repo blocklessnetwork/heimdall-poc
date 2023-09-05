@@ -6,7 +6,7 @@ interface IHeimdallCompliant {
 		bool compliant;
 		address senderAddress;
 		address destAddress;
-		string timestamp;
+		uint64 timestamp;
 		address guardian;
 		bytes signature;
 	}

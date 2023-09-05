@@ -24,7 +24,7 @@ export class RawTransaction {
 			data.getString('from')!._str,
 			data.getString('to')!._str,
 			data.getString('value') ? u128.from(data.getString('value')!._str) : null,
-			data.getString('value')!._str
+			data.getString('data')!._str
 		)
 	}
 
@@ -55,18 +55,19 @@ export function abiEncodePacked(args: json.JSON.Value[]): string {
 		const arg = args[i]
 
 		if (arg.isString) {
-			const hexString = toHex((arg as json.JSON.Str)._str)
-			const length = hexString.length / 2
-			// encodedData +=  // Encode length as a hexadecimal byte
-			encodedData += (length.toString(16) + hexString).padStart(64, '0')
-		} else if (arg.isNum || arg.isInteger) {
-			const hexValue = (arg as json.JSON.Integer)._num.toString(16).padStart(64, '0')
+			const strVal = (arg as json.JSON.Str)._str
+			if (strVal.startsWith('0x')) {
+				encodedData += strVal.replace('0x', '')
+			} else {
+				const hexString = toHex((arg as json.JSON.Str)._str)
+				encodedData += hexString.padStart(64, '0')
+			}
+		} else if (arg.isInteger) {
+			const hexValue = (arg as json.JSON.Integer)._num.toString(16).padStart(16, '0')
 			encodedData += hexValue
 		} else if (arg.isBool) {
 			const hexValue = arg ? '01' : '00'
-			encodedData += hexValue.padStart(64, '0')
-		} else {
-			throw new Error(`Unsupported type: ${typeof arg}`)
+			encodedData += hexValue
 		}
 	}
 

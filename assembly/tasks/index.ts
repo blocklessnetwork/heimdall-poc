@@ -13,7 +13,7 @@ export class ComplianceCertificate {
 
 	private senderAddress: string
 	private destAddress: string
-	private timestamp: string
+	private timestamp: i64
 
 	private guardian: string
 	private signature: string = ''
@@ -23,7 +23,7 @@ export class ComplianceCertificate {
 		this.senderAddress = senderAddress
 		this.destAddress = destAddress
 
-		this.timestamp = Date.now().toString()
+		this.timestamp = Date.now() / 1000
 
 		this.guardian = Env.GUARDIAN_PUBLIC_KEY
 		this.signature = this.sign()
@@ -36,7 +36,7 @@ export class ComplianceCertificate {
 		values.push(json.JSON.from(this.destAddress))
 		values.push(json.JSON.from(this.timestamp))
 
-		return `0x${abiEncodePacked(values)}`
+		return abiEncodePacked(values)
 	}
 
 	sign(): string {
