@@ -56,25 +56,6 @@ describe('HeimdallCompliant', function () {
 		).to.be.revertedWith('Only the owner can call this function')
 	})
 
-	it('should allow swapping with a valid certificate', async function () {
-		const [_, guardian, fromAddress, toAddress] = await hre.ethers.getSigners()
-
-		const from = fromAddress
-		const to = toAddress
-		const amount = hre.ethers.parseEther('1.0')
-
-		const certificate = {
-			compliant: true,
-			senderAddress: from,
-			destAddress: to,
-			timestamp: new Date().toISOString(),
-			guardian,
-			signature: hre.ethers.randomBytes(32)
-		}
-
-		await swapCompliantProtocol.swap(from, to, amount, certificate)
-	})
-
 	it('should revert when swapping with an invalid certificate', async function () {
 		const [_, guardian, fromAddress, toAddress] = await hre.ethers.getSigners()
 

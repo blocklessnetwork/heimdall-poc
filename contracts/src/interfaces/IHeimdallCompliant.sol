@@ -15,7 +15,7 @@ interface IHeimdallCompliant {
 
 	function setPolicies(address[] calldata _policies) external;
 
-	function verifyCertificate(ComplianceCertificate memory certificate) external view returns (bool);
+	function verifyCertificate(ComplianceCertificate memory certificate) external returns (bool);
 
 	function isHeimdallCompliant() external pure returns (bool);
 }
