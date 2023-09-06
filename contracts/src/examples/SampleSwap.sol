@@ -7,11 +7,7 @@ contract SampleSwap is HeimdallCompliant {
 	event SwapEvent(address indexed from, address indexed to, uint256 amount);
 
 	constructor(address guardianRegistry) HeimdallCompliant(guardianRegistry) {}
-
-	function swap(address from, address to, uint256 amount) internal {
-		_swap(from, to, amount);
-	}
-
+	
 	function swap(
 		address from,
 		address to,

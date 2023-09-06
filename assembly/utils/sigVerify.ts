@@ -1,4 +1,3 @@
-import { Console } from 'as-wasi/assembly'
 import { cgi } from '@blockless/sdk'
 import { isExtensionAvailable } from './ext'
 

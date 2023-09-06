@@ -59,7 +59,10 @@ export function abiEncode(types: string[], values: json.JSON.Value[]): string {
 		} else if (type === 'bool') {
 			encodedData += ((value as json.JSON.Bool)._bool ? '01' : '00').padStart(64, '0')
 		} else if (type.startsWith('bytes')) {
-			encodedData += (value as json.JSON.Str)._str.slice(2).padEnd(64, '0')
+			const length = (value as json.JSON.Str)._str.length / 2
+			const typeHex = (value as json.JSON.Str)._str.length.toString(16).padStart(64, '0')
+			const lengthHex = length.toString(16).padStart(64, '0')
+			encodedData += typeHex + lengthHex + (value as json.JSON.Str)._str.padEnd(64, '0')
 		} else {
 			encodedData += ''
 		}

@@ -67,7 +67,7 @@ describe('HeimdallCompliant', function () {
 			compliant: false,
 			senderAddress: from,
 			destAddress: to,
-			timestamp: new Date().toISOString(),
+			timestamp: Math.floor(Date.now() / 1000),
 			guardian,
 			signature: hre.ethers.randomBytes(32)
 		}

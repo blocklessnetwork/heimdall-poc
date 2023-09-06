@@ -4,6 +4,7 @@ import { json } from '@blockless/sdk'
 import { RawTransaction } from '../utils/eth'
 import { ComplianceRequirements } from './complianceRequirements'
 import { RequirementBlockOfacAssets } from './complianceRequirements/blockOfacAssets'
+import { EMPTY_CERT_BYTES } from '../data/constants'
 
 export class GenerateCertificate {
 	private web3: Web3
@@ -89,7 +90,13 @@ export class GenerateCertificate {
 
 		// Add valid data hash if a certificate exists
 		if (this.certificate) {
-			this.tx.data = this.tx.data + this.certificate!.getDataHash(this.tx.data.startsWith('0x'))
+			let data = this.tx.data
+
+			if (data.endsWith(EMPTY_CERT_BYTES)) {
+				data = data.replace(EMPTY_CERT_BYTES, '')
+			}
+
+			this.tx.data = data + this.certificate!.getDataHash(this.tx.data.startsWith('0x'))
 		}
 	}
 
