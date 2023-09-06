@@ -40,6 +40,34 @@ export class RawTransaction {
 	}
 }
 
+export function abiEncode(types: string[], values: json.JSON.Value[]): string {
+	if (types.length !== values.length) return ''
+
+	let encodedData = ''
+
+	for (let i = 0; i < values.length; i++) {
+		const type = types[i]
+		const value = values[i]
+
+		if (type === 'address') {
+			encodedData += (value as json.JSON.Str)._str.slice(2).padStart(64, '0')
+		} else if (type.startsWith('uint') || type.startsWith('int')) {
+			encodedData += u128
+				.from((value as json.JSON.Integer)._num)
+				.toString(16)
+				.padStart(64, '0')
+		} else if (type === 'bool') {
+			encodedData += ((value as json.JSON.Bool)._bool ? '01' : '00').padStart(64, '0')
+		} else if (type.startsWith('bytes')) {
+			encodedData += (value as json.JSON.Str)._str.slice(2).padEnd(64, '0')
+		} else {
+			encodedData += ''
+		}
+	}
+
+	return encodedData
+}
+
 export function abiEncodePacked(args: json.JSON.Value[]): string {
 	let encodedData = ''
 

@@ -1,7 +1,7 @@
 import { json } from '@blockless/sdk'
 import Env from '../utils/env'
 import { signBls } from '../utils/sigVerify'
-import { abiEncodePacked } from '../utils/eth'
+import { abiEncode, abiEncodePacked } from '../utils/eth'
 
 export class TaskResult<T> {
 	value: T | null = null
@@ -47,7 +47,7 @@ export class ComplianceCertificate {
 		return signature
 	}
 
-	getDataHash(): string {
+	getDataHash(isPadded: bool): string {
 		const values: json.JSON.Value[] = []
 		values.push(json.JSON.from(this.isCompliant))
 		values.push(json.JSON.from(this.senderAddress))
@@ -56,6 +56,9 @@ export class ComplianceCertificate {
 		values.push(json.JSON.from(this.guardian))
 		values.push(json.JSON.from(this.signature))
 
-		return `0x${abiEncodePacked(values)}`
+		return `${!isPadded ? '0x' : ''}${abiEncode(
+			['bool', 'address', 'address', 'uint64', 'address', 'bytes'],
+			values
+		)}`
 	}
 }

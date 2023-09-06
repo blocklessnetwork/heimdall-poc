@@ -89,7 +89,7 @@ export class GenerateCertificate {
 
 		// Add valid data hash if a certificate exists
 		if (this.certificate) {
-			this.tx.data = this.tx.data + this.certificate!.getDataHash()
+			this.tx.data = this.tx.data + this.certificate!.getDataHash(this.tx.data.startsWith('0x'))
 		}
 	}
 
