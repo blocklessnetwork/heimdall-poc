@@ -1,13 +1,13 @@
 import hre from 'hardhat'
-import { ethers } from 'hardhat'
 import { expect } from 'chai'
 import { HeimdallGuardianRegistry } from '../typechain-types'
 
 describe('HeimdallGuardianRegistry', function () {
 	let guardianRegistry: HeimdallGuardianRegistry
+	let guardianBytes = hre.ethers.hexlify(hre.ethers.randomBytes(48))
 
 	beforeEach(async function () {
-		let contractFactory = await ethers.getContractFactory('HeimdallGuardianRegistry')
+		let contractFactory = await hre.ethers.getContractFactory('HeimdallGuardianRegistry')
 		guardianRegistry = await contractFactory.deploy('MyRegistry', 'Description')
 	})
 
@@ -22,7 +22,7 @@ describe('HeimdallGuardianRegistry', function () {
 		const [owner, guardian] = await hre.ethers.getSigners()
 
 		// Add a guardian
-		await guardianRegistry.connect(owner).addGuardian(guardian.address)
+		await guardianRegistry.connect(owner).addGuardian(guardian.address, guardianBytes)
 
 		// Retrieve the guardian's details
 		const isGuardian = await guardianRegistry.isGuardian(guardian.address)
@@ -34,7 +34,7 @@ describe('HeimdallGuardianRegistry', function () {
 		const [owner, guardian] = await hre.ethers.getSigners()
 
 		// Add a guardian
-		await guardianRegistry.connect(owner).addGuardian(guardian.address)
+		await guardianRegistry.connect(owner).addGuardian(guardian.address, guardianBytes)
 
 		// Remove the guardian
 		await guardianRegistry.connect(owner).removeGuardian(guardian.address)
@@ -49,7 +49,7 @@ describe('HeimdallGuardianRegistry', function () {
 
 		// Attempt to add a guardian with the zero address
 		await expect(
-			guardianRegistry.connect(owner).addGuardian(ethers.ZeroAddress)
+			guardianRegistry.connect(owner).addGuardian(hre.ethers.ZeroAddress, hre.ethers.ZeroHash)
 		).to.be.revertedWith('Guardian address cannot be the zero address')
 	})
 
@@ -57,12 +57,12 @@ describe('HeimdallGuardianRegistry', function () {
 		const [owner, guardian] = await hre.ethers.getSigners()
 
 		// Add a guardian
-		await guardianRegistry.connect(owner).addGuardian(guardian.address)
+		await guardianRegistry.connect(owner).addGuardian(guardian.address, guardianBytes)
 
 		// Attempt to add the same guardian again (should fail)
-		await expect(guardianRegistry.connect(owner).addGuardian(guardian.address)).to.be.revertedWith(
-			'Guardian already exists'
-		)
+		await expect(
+			guardianRegistry.connect(owner).addGuardian(guardian.address, guardianBytes)
+		).to.be.revertedWith('Guardian already exists')
 	})
 
 	it('should check if an address is a guardian', async function () {
@@ -78,7 +78,7 @@ describe('HeimdallGuardianRegistry', function () {
 
 		// Attempt to add a guardian as a non-owner (should fail)
 		await expect(
-			guardianRegistry.connect(nonOwner).addGuardian(guardian.address)
+			guardianRegistry.connect(nonOwner).addGuardian(guardian.address, guardianBytes)
 		).to.be.revertedWith('Only the owner can call this function')
 
 		// Attempt to remove a guardian as a non-owner (should fail)

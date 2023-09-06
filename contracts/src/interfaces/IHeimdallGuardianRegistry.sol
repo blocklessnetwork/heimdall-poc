@@ -8,7 +8,7 @@ interface IHeimdallGuardianRegistry {
 
 	function owner() external view returns (address);
 
-	function addGuardian(address _guardianAddress) external;
+	function addGuardian(address _guardianAddress, bytes memory _publicKey) external;
 
 	function removeGuardian(address _guardianAddress) external;
 

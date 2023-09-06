@@ -9,7 +9,7 @@ contract HeimdallGuardianRegistry is IHeimdallGuardianRegistry {
 	address public owner;
 
 	struct Guardian {
-		address publicKey;
+		bytes publicKey;
 	}
 
 	mapping(address => Guardian) guardians;
@@ -26,18 +26,18 @@ contract HeimdallGuardianRegistry is IHeimdallGuardianRegistry {
 	}
 
 	// Add a new guardian
-	function addGuardian(address _guardianAddress) external onlyOwner {
+	function addGuardian(address _guardianAddress, bytes memory _publicKey) external onlyOwner {
 		require(_guardianAddress != address(0), 'Guardian address cannot be the zero address');
-		require(guardians[_guardianAddress].publicKey == address(0), 'Guardian already exists');
+		require(guardians[_guardianAddress].publicKey.length == 0, 'Guardian already exists');
 
-		guardians[_guardianAddress] = Guardian({publicKey: _guardianAddress});
+		guardians[_guardianAddress] = Guardian({publicKey: _publicKey});
 
 		emit GuardianAdded(_guardianAddress);
 	}
 
 	// Remove a guardian
 	function removeGuardian(address _guardianAddress) external onlyOwner {
-		require(guardians[_guardianAddress].publicKey != address(0), 'Guardian does not exist');
+		require(guardians[_guardianAddress].publicKey.length > 0, 'Guardian does not exist');
 
 		delete guardians[_guardianAddress];
 		emit GuardianRemoved(_guardianAddress);
@@ -45,6 +45,6 @@ contract HeimdallGuardianRegistry is IHeimdallGuardianRegistry {
 
 	// Check if an address is a guardian
 	function isGuardian(address _address) external view returns (bool) {
-		return guardians[_address].publicKey != address(0);
+		return guardians[_address].publicKey.length > 0;
 	}
 }

@@ -25,7 +25,7 @@ export class ComplianceCertificate {
 
 		this.timestamp = Date.now() / 1000
 
-		this.guardian = Env.GUARDIAN_PUBLIC_KEY
+		this.guardian = Env.GUARDIAN_ADDRESS
 		this.signature = this.sign()
 	}
 

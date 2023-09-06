@@ -9,11 +9,12 @@ describe('HeimdallCompliant', function () {
 
 	beforeEach(async () => {
 		const [owner, guardian] = await hre.ethers.getSigners()
+		let guardianBytes = hre.ethers.hexlify(hre.ethers.randomBytes(48))
 
 		// Setup Guardian
 		let guardianRegistryFactory = await hre.ethers.getContractFactory('HeimdallGuardianRegistry')
 		guardianRegistry = await guardianRegistryFactory.deploy('MyRegistry', 'Description')
-		await guardianRegistry.connect(owner).addGuardian(guardian.address)
+		await guardianRegistry.connect(owner).addGuardian(guardian.address, guardianBytes)
 
 		// Setup Compliance Policy
 		const policyContractFactory = await hre.ethers.getContractFactory('HeimdallCompliancePolicy')
