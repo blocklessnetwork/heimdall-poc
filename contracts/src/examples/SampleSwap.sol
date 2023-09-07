@@ -14,7 +14,7 @@ contract SampleSwap is HeimdallCompliant {
 		uint256 amount,
 		ComplianceCertificate memory certificate
 	) external {
-		require(this.verifyCertificate(certificate), 'Invalid certificate');
+		require(this.verifyCertificate(certificate), 'Failed to verify certificate');
 		_swap(from, to, amount);
 	}
 

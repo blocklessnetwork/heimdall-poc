@@ -50,6 +50,8 @@ async function submitTransaction() {
 	console.log('Signed Transaction:', tx)
 
 	// 6. Submit transaction to network...
+	const response = await signer.sendTransaction(txDataWithCertificate)
+	console.log('Submitted', response)
 }
 
 submitTransaction()

@@ -9,7 +9,12 @@ async function main() {
 	])
 	await guardianRegistry.waitForDeployment()
 	console.log('Guardian registry deployed!', await guardianRegistry.getAddress())
-	// await guardianRegistry.connect(owner).addGuardian(guardian.address)
+
+	// Add guardian
+	let guardianAddress = '0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097'
+	let guardianBytes = ethers.hexlify(ethers.randomBytes(48))
+	await guardianRegistry.addGuardian(guardianAddress, guardianBytes)
+	console.log('Guardian added')
 
 	console.log('\n---------\n')
 
