@@ -68,7 +68,7 @@ export function abiEncode(types: string[], values: json.JSON.Value[]): string {
 		}
 	}
 
-	return encodedData
+	return encodedData.toLowerCase()
 }
 
 export function abiEncodePacked(args: json.JSON.Value[]): string {
@@ -94,7 +94,7 @@ export function abiEncodePacked(args: json.JSON.Value[]): string {
 				encodedData += hexString.padStart(64, '0')
 			}
 		} else if (arg.isInteger) {
-			const hexValue = (arg as json.JSON.Integer)._num.toString(16).padStart(16, '0')
+			const hexValue = (arg as json.JSON.Integer)._num.toString(16).padStart(64, '0')
 			encodedData += hexValue
 		} else if (arg.isBool) {
 			const hexValue = arg ? '01' : '00'
@@ -102,5 +102,5 @@ export function abiEncodePacked(args: json.JSON.Value[]): string {
 		}
 	}
 
-	return encodedData
+	return encodedData.toLowerCase()
 }
