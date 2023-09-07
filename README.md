@@ -7,6 +7,9 @@ This repository contains the codebase for Heimdall's Compliance Verifier on Bloc
 - `assembly/` Blockless Function built with Assembly Script.
 - `contracts/` Heimdall POC contracts.
 - `extensions/` A list of Blockless extensions required for the Heimdall Blockless Function.
+- `client/` A sample use case script for client implementation.
+- `explorer/` A visual explorer for Heimdall's guardian registry, protocol contracts and policies.
+
 
 ## Development
 
