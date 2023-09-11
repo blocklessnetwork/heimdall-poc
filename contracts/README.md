@@ -1,11 +1,12 @@
 # Heimdall POC Contracts
 
-Try running some of the following tasks:
+To run the hardhat node locally, use the following commands:
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+
+Start the hardhat node with
+`npx hardhat node` or `yarn hardhat`
+
+Run the initial deployment script with 
+`npx hardhat run scripts/deploy.ts` or `yarn deploy`
+
+Test the contracts with `npx hardhat test` or `yarn test`
