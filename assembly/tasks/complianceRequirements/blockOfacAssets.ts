@@ -19,7 +19,7 @@ export class RequirementBlockOfacAssets {
 		for (let i = 0; i < sanctionedAddresses.length; i++) {
 			const sanctionedAddress = sanctionedAddresses[i]
 
-			if (address === sanctionedAddress.stringify()) {
+			if (address === sanctionedAddress.toString()) {
 				isFound = true
 			}
 		}
