@@ -8,8 +8,8 @@
 		"clean": "rm -rf build",
 		"build:release": "npm run clean; asc assembly/index.ts --target release",
 		"build:debug": "npm run clean; asc assembly/index.ts --target debug",
-		"format": "prettier --check .",
-		"format:fix": "prettier --write ."
+		"format": "prettier --ignore-path .gitignore --check .",
+		"format:fix": "prettier --ignore-path .gitignore --write ."
 	},
 	"dependencies": {
 		"@blockless/sdk": "^1.1.2",

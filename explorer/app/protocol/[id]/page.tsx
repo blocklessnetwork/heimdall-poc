@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { Fragment, FunctionFragment, ethers } from 'ethers'
+import { FunctionFragment, ethers } from 'ethers'
 import { getEthereumProvider } from '@/lib/ethers'
 
 import { abi as policyAbi } from '@/data/policyAbis.json'
@@ -112,7 +112,10 @@ export default async function ProtocolDetail({ params }: { params: { id: string 
 						</div>
 						<div className="flex flex-col gap-8 w-1/4">
 							<Separator />
-							<TransactionEmulator compatibleFunctions={JSON.parse(JSON.stringify(compatibleFunctions))} />
+							<TransactionEmulator
+								contractAddress={params.id}
+								compatibleFunctions={JSON.parse(JSON.stringify(compatibleFunctions))}
+							/>
 						</div>
 					</div>
 				</div>

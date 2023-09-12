@@ -16,7 +16,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { CheckCircle, Hourglass, Loader2 } from 'lucide-react'
 import { Textarea } from './ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import { FunctionFragment } from 'ethers'
+import { FunctionFragment, ethers } from 'ethers'
+import { getKnownProtocol } from '@/data/knownProtocols'
+import { abi as protocolAbi } from '@/data/protocolAbis.json'
+import { getEthereumProvider } from '@/lib/ethers'
+import { EMPTY_CERT } from '@/data/constants'
+import { useAtomValue } from 'jotai/react'
+import walletAtom from '@/atoms/wallet'
+import { generateComplianceCertificate } from '@/lib/cert'
 
 const defaultSteps: { status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'; label: string }[] = [
 	{
@@ -29,40 +36,11 @@ const defaultSteps: { status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'; label: st
 	}
 ]
 
-// TODO: Remove - Used for video demo
-const sampleRequest = {
-	jsonrpc: '2.0',
-	method: 'hm_requestComplianceCertificate',
-	params: [
-		{
-			chainId: 31337,
-			type: 2,
-			nonce: 6,
-			value: '0',
-			from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-			to: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
-			data: ''
-		}
-	],
-	id: 1
-}
-
-// TODO: Remove - Used for video demo
-const sampleResponse = {
-	id: 1,
-	result: {
-		chainId: 31337,
-		nonce: 6,
-		from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-		to: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
-		value: '0',
-		data: '0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb922660000000000000000000000009fE46736679d2D9a65F0992F2272dE9f3c7fa6e00000000000000000000000000000000000000000000000000000000064f8a8a1000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb9226600000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000060894d3967e80f414870fab0214a15a06b112da07a96f79e1e8f596008fbdea889c86efcb1fcaf2e6fad7e8e774452acb707c8e64a54287ce83ecb8b667fff7d1945c8154acfc770bb3e39d72ef1cca5de6ca0c313dc62f8167cbe6ecc885424a6'
-	}
-}
-
 export default function TransactionEmulator({
+	contractAddress,
 	compatibleFunctions
 }: {
+	contractAddress: string
 	compatibleFunctions: FunctionFragment[]
 }) {
 	const [selectedFn, setSelectedFn] = useState<string | undefined>(undefined)
@@ -71,8 +49,31 @@ export default function TransactionEmulator({
 	const [isLoading, setIsLoading] = useState(false)
 	const [progress, setProgress] = useState(JSON.parse(JSON.stringify(defaultSteps)))
 
+	const fromAddress = useAtomValue(walletAtom.address)
+	const [requestData, setRequestData] = useState({})
+	const [responseData, setResponseData] = useState({})
+	const [certificateData, setCertificateData] = useState({})
 	const selectedFunction = compatibleFunctions.find((cf) => cf.name === selectedFn)
-	
+
+	// Initalize provider and contract
+	const provider = getEthereumProvider()
+	const protocol = getKnownProtocol(contractAddress)
+	const contract = new ethers.Contract(
+		contractAddress,
+		protocol ? protocol.abi : protocolAbi,
+		provider
+	)
+
+	// Reset handler for a new transaction
+	const handleReset = () => {
+		setIsLoading(false)
+		setProgress(JSON.parse(JSON.stringify(defaultSteps)))
+		setCertificateData({})
+		setRequestData({})
+		setResponseData({})
+	}
+
+	// Update state values on input change
 	const handleInputChange = (index: number, newValue: string) => {
 		const newInputValues = [...inputValues]
 
@@ -82,11 +83,7 @@ export default function TransactionEmulator({
 		setIsValid(newInputValues.filter((v) => !!v).length === 3)
 	}
 
-	const handleResetSteps = () => {
-		setIsLoading(false)
-		setProgress(JSON.parse(JSON.stringify(defaultSteps)))
-	}
-
+	// Generate a new certificate and update request / response data
 	const handleGenerateCertificate = async () => {
 		setIsLoading(true)
 
@@ -95,12 +92,36 @@ export default function TransactionEmulator({
 		newProgress[1].status = 'IN_PROGRESS'
 		setProgress(newProgress)
 
-		setTimeout(() => {
-			const newProgress2 = [...progress]
-			newProgress2[1].status = 'COMPLETED'
-			setProgress(newProgress2)
-			setIsLoading(false)
-		}, 2000)
+		// Generate raw transaction data with an empty certificate
+		const txData: ethers.TransactionLike = {
+			chainId: Number((await provider.getNetwork()).chainId),
+			type: 2,
+			nonce: 1,
+			value: ethers.parseEther('0').toString(),
+			from: fromAddress,
+			...(await contract
+				.getFunction(selectedFn as string)
+				.populateTransaction(ethers.ZeroAddress, ethers.ZeroAddress, 1 * 1e8, EMPTY_CERT))
+		}
+
+		// Send raw transaction data for compliance check
+		const txDataWithCertificate = await generateComplianceCertificate(txData)
+
+		// Decode the response and extract the certificate
+		const certificateData = contract.interface
+			.decodeFunctionData(selectedFn as string, txDataWithCertificate.data!)
+			.certificate.toObject()
+		certificateData.timestamp = certificateData.timestamp.toString()
+
+		// Update request, response and certificate data for display
+		setRequestData(txData)
+		setResponseData(txDataWithCertificate)
+		setCertificateData(certificateData)
+
+		const newProgress2 = [...progress]
+		newProgress2[1].status = 'COMPLETED'
+		setProgress(newProgress2)
+		setIsLoading(false)
 	}
 
 	return (
@@ -115,8 +136,8 @@ export default function TransactionEmulator({
 							<SelectValue placeholder="Select function ..." />
 						</SelectTrigger>
 						<SelectContent>
-							{compatibleFunctions.map((cf) => (
-								<SelectItem value={cf.name} defaultChecked={true}>
+							{compatibleFunctions.map((cf, i) => (
+								<SelectItem key={i} value={cf.name} defaultChecked={true}>
 									{cf.name}
 								</SelectItem>
 							))}
@@ -129,7 +150,7 @@ export default function TransactionEmulator({
 						{selectedFunction.inputs
 							.filter((input) => input.name !== 'certificate')
 							.map((input, i) => (
-								<div className="flex flex-col gap-2">
+								<div key={i} className="flex flex-col gap-2">
 									<span className="text-md">{input.name}</span>
 									<Input
 										value={inputValues[i] || ''}
@@ -145,7 +166,7 @@ export default function TransactionEmulator({
 
 				<Dialog>
 					<DialogTrigger asChild disabled={!isValid}>
-						<Button className="w-full" disabled={!isValid} onClick={() => handleResetSteps()}>
+						<Button className="w-full" disabled={!isValid} onClick={() => handleReset()}>
 							Start
 						</Button>
 					</DialogTrigger>
@@ -175,20 +196,27 @@ export default function TransactionEmulator({
 								{progress &&
 									progress.length > 0 &&
 									progress[progress.length - 1].status === 'COMPLETED' && (
-										<Tabs defaultValue="response">
-											<TabsList className="grid w-full grid-cols-2">
+										<Tabs defaultValue="certificate">
+											<TabsList className="grid w-full grid-cols-3">
+												<TabsTrigger value="certificate">Certificate</TabsTrigger>
 												<TabsTrigger value="response">Response</TabsTrigger>
 												<TabsTrigger value="request">Request</TabsTrigger>
 											</TabsList>
+											<TabsContent value="certificate">
+												<Textarea
+													defaultValue={JSON.stringify(certificateData, null, 2)}
+													className="h-72"
+												/>
+											</TabsContent>
 											<TabsContent value="response">
 												<Textarea
-													defaultValue={JSON.stringify(sampleResponse, null, 2)}
+													defaultValue={JSON.stringify(responseData, null, 2)}
 													className="h-72"
 												/>
 											</TabsContent>
 											<TabsContent value="request">
 												<Textarea
-													defaultValue={JSON.stringify(sampleRequest, null, 2)}
+													defaultValue={JSON.stringify(requestData, null, 2)}
 													className="h-72"
 												/>
 											</TabsContent>
