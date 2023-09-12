@@ -13,7 +13,6 @@ export function Search() {
 	const [type, setType] = useState<'protocol' | 'policy' | null>(null)
 
 	useEffect(() => {
-		console.log('id', id, isValidEthereumAddress(id))
 		if (isValidEthereumAddress(id)) {
 			setIsValid(true)
 			setType('protocol')
@@ -42,7 +41,7 @@ export function Search() {
 		<div className="flex gap-4">
 			<Input
 				type="search"
-				placeholder="Enter a heimdall compliant protocol or policy ..."
+				placeholder="Enter a heimdall compliant protocol ..."
 				className="md:w-[120px] lg:w-[420px] lg:h-[42px]"
 				onChange={(e) => setId(e.target.value)}
 				onKeyDown={handleKeyDown}

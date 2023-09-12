@@ -1,33 +1,41 @@
 import { getEthereumProvider } from '@/lib/ethers'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from './ui/table'
+import { ethers } from 'ethers'
+import registryAbi from '@/data/registryAbis.json'
 import { shortenString } from '@/lib/strings'
 
+const GuardianRegistryAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+
 export default async function GuardianRegistry() {
-	const address = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+	let guardians: { address: string; publicKey: string }[] = []
 
 	try {
-		const code = await getEthereumProvider().getCode(address)
+		const code = await getEthereumProvider().getCode(GuardianRegistryAddress)
 		if (code === '0x') return <></>
+
+		const contract = new ethers.Contract(
+			GuardianRegistryAddress,
+			registryAbi.abi,
+			getEthereumProvider()
+		)
+		const guardiansList = await contract.listGuardians()
+
+		for (let i = 0; i < guardiansList[0].length; i++) {
+			guardians.push({
+				address: guardiansList[0][i],
+				publicKey: shortenString(guardiansList[1][i], 16)
+			})
+		}
 	} catch (error) {
 		return <></>
 	}
-
-	const guardians = [
-		{
-			address: '0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097',
-			publicKey: shortenString(
-				'0xa462d6f5bc4270b2cfc3b4692b8aeb61bae2db8c1e62e7eb5c47cbe7ddb6abc7505672856e99936e9c7eaebf52ae175c',
-				16
-			)
-		}
-	]
 
 	return (
 		<>
 			<div className="flex flex-col">
 				<div className="flex flex-col gap-2 mb-4">
 					<h2 className="text-2xl">Guardian Registry</h2>
-					<p className="opacity-75">{address}</p>
+					<p className="opacity-75">{GuardianRegistryAddress}</p>
 				</div>
 				<Table>
 					<TableHeader>
