@@ -50,6 +50,7 @@ export default function TransactionEmulator({
 	const [progress, setProgress] = useState(JSON.parse(JSON.stringify(defaultSteps)))
 
 	const fromAddress = useAtomValue(walletAtom.address)
+	const blsRPC = useAtomValue(walletAtom.blsRPC)
 	const [requestData, setRequestData] = useState({})
 	const [responseData, setResponseData] = useState({})
 	const [certificateData, setCertificateData] = useState({})
@@ -105,7 +106,7 @@ export default function TransactionEmulator({
 		}
 
 		// Send raw transaction data for compliance check
-		const txDataWithCertificate = await generateComplianceCertificate(txData)
+		const txDataWithCertificate = await generateComplianceCertificate(txData, blsRPC)
 
 		// Decode the response and extract the certificate
 		const certificateData = contract.interface

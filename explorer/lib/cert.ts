@@ -1,7 +1,8 @@
 import { ethers } from 'ethers'
 
 export async function generateComplianceCertificate(
-	txData: ethers.TransactionLike
+	txData: ethers.TransactionLike,
+	rpcEndpoint?: string
 ): Promise<ethers.TransactionLike> {
 	const body = JSON.stringify({
 		jsonrpc: '2.0',
@@ -10,7 +11,7 @@ export async function generateComplianceCertificate(
 		id: 1
 	})
 
-	const response = await fetch('http://127.0.0.1:3000', {
+	const response = await fetch(rpcEndpoint || 'http://127.0.0.1:3000', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body
