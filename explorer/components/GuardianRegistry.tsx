@@ -16,7 +16,8 @@ export default async function GuardianRegistry() {
 		{
 			address: '0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097',
 			publicKey: shortenString(
-				'0xa462d6f5bc4270b2cfc3b4692b8aeb61bae2db8c1e62e7eb5c47cbe7ddb6abc7505672856e99936e9c7eaebf52ae175c', 16
+				'0xa462d6f5bc4270b2cfc3b4692b8aeb61bae2db8c1e62e7eb5c47cbe7ddb6abc7505672856e99936e9c7eaebf52ae175c',
+				16
 			)
 		}
 	]

@@ -6,7 +6,8 @@ const policyRequirementNames = [
 	{
 		id: PolicyRequirement.BLOCK_OFAC_ASSETS,
 		name: 'Block OFAC Assets',
-		descrption: 'This action verifies whether a specific address is included on the Office of Foreign Assets Control (OFAC) Blocked Assets list.'
+		descrption:
+			'This action verifies whether a specific address is included on the Office of Foreign Assets Control (OFAC) Blocked Assets list.'
 	}
 ]
 

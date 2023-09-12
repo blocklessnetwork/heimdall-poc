@@ -14,14 +14,7 @@ export default function Footer() {
 							<a href="https://blockless.network/" target="_blank" rel="noopener noreferrer">
 								Blockless
 							</a>
-
-							<Image
-								src="/bls-logo.png"
-								width={24}
-								height={24}
-								alt="Blockless"
-								className="ml-3"
-							/>
+							<Image src="/bls-logo.png" width={24} height={24} alt="Blockless" className="ml-3" />
 						</div>
 					</div>
 				</div>

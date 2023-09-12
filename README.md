@@ -10,7 +10,6 @@ This repository contains the codebase for Heimdall's Compliance Verifier on Bloc
 - `client/` A sample use case script for client implementation.
 - `explorer/` A visual explorer for Heimdall's guardian registry, protocol contracts and policies.
 
-
 ## Development
 
 ### Blockless Function
