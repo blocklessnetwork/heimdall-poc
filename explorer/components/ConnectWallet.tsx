@@ -23,12 +23,12 @@ export default function ConnectWallet() {
 			setIsDirty(true)
 		}
 
-		if (address.length > 0 && blsRPC.length > 0) {
+		if (address.length > 0 && blsRPC && blsRPC.length > 0) {
 			setIsValid(true)
 		} else {
 			setIsValid(false)
 		}
-	}, [address, blsRPC])
+	}, [address, blsRPC, walletAddress, walletBlsRPC])
 
 	useEffect(() => {
 		setAddress(walletAddress)
@@ -40,7 +40,7 @@ export default function ConnectWallet() {
 
 		setIsDirty(false)
 		setWalletAddress(address.trim())
-		setWalletBlsRPC(blsRPC.trim())
+		setWalletBlsRPC(blsRPC?.trim())
 	}
 
 	return (

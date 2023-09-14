@@ -174,7 +174,7 @@ export default function TransactionEmulator({
 						<DialogHeader>
 							<DialogTitle>Transaction Emulator</DialogTitle>
 							<DialogDescription>
-								This action emulates the Heimdall's compliance certification generation and
+								This action emulates the Heimdall compliance certification generation and
 								verification.
 							</DialogDescription>
 						</DialogHeader>
