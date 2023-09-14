@@ -10,12 +10,11 @@ export function getEthereumProvider(providerUrl?: string): ethers.JsonRpcProvide
 	return provider
 }
 
-getEthereumProvider('http://127.0.0.1:8545')
+getEthereumProvider(process.env.RPC_ENDPOINT || process.env.NEXT_PUBLIC_RPC_ENDPOINT)
 
 export function isValidEthereumAddress(address: string): boolean {
 	try {
 		const addressBytes = ethers.getAddress(address)
-		console.log('address bytes', addressBytes)
 		return addressBytes.toString().toLowerCase() === address.toLowerCase()
 	} catch (error) {
 		return false // Invalid Ethereum address

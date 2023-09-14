@@ -1,4 +1,4 @@
-import GuardianRegistry from '@/components/GuardianRegistry'
+import KnownProtocols from '@/components/KnownProtocols'
 import { Search } from '@/components/Search'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -30,7 +30,7 @@ export default function Home() {
 								<CardTitle className="text-sm font-medium">Protocols</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<div className="text-2xl font-bold">2</div>
+								<div className="text-2xl font-bold">1</div>
 								{/* <p className="text-xs text-muted-foreground"></p> */}
 							</CardContent>
 						</Card>
@@ -39,7 +39,7 @@ export default function Home() {
 								<CardTitle className="text-sm font-medium">Total Transactions</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<div className="text-2xl font-bold">34</div>
+								<div className="text-2xl font-bold">0</div>
 								{/* <p className="text-xs text-muted-foreground"></p> */}
 							</CardContent>
 						</Card>
@@ -47,7 +47,7 @@ export default function Home() {
 
 					<Separator />
 
-					<GuardianRegistry />
+					<KnownProtocols />
 				</div>
 			</div>
 		</div>

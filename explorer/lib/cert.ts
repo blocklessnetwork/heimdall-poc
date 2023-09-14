@@ -11,11 +11,14 @@ export async function generateComplianceCertificate(
 		id: 1
 	})
 
-	const response = await fetch(rpcEndpoint || 'http://127.0.0.1:3000', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body
-	})
+	const response = await fetch(
+		rpcEndpoint || (process.env.BLS_ENDPOINT || process.env.NEXT_PUBLIC_BLS_ENDPOINT)!,
+		{
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body
+		}
+	)
 
 	const jsonResponse = await response.json()
 

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { ethers } from 'ethers'
 import { getEthereumProvider } from '@/lib/ethers'
 
-import { abi as policyAbi } from '@/data/policyAbis.json'
+import policyAbis from '@/data/policyAbis.json'
 import { Separator } from '@/components/ui/separator'
 import {
 	Table,
@@ -23,7 +23,7 @@ export default async function PolicyDetail({ params }: { params: { id: string } 
 		const code = await getEthereumProvider().getCode(params.id)
 		if (code === '0x') notFound()
 
-		const contract = new ethers.Contract(params.id, policyAbi, getEthereumProvider())
+		const contract = new ethers.Contract(params.id, policyAbis.abi, getEthereumProvider())
 
 		name = await contract.name()
 		version = await contract.version()

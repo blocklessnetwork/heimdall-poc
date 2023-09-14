@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { FunctionFragment, ethers } from 'ethers'
 import { getEthereumProvider } from '@/lib/ethers'
 
-import { abi as policyAbi } from '@/data/policyAbis.json'
-import { abi as protocolAbi } from '@/data/protocolAbis.json'
+import policyAbis from '@/data/policyAbis.json'
+import protocolAbis from '@/data/protocolAbis.json'
 import { Separator } from '@/components/ui/separator'
 import {
 	Table,
@@ -32,7 +32,7 @@ export default async function ProtocolDetail({ params }: { params: { id: string 
 
 		const contract = new ethers.Contract(
 			params.id,
-			protocol ? protocol.abi : protocolAbi,
+			protocol ? protocol.abi : protocolAbis.abi,
 			getEthereumProvider()
 		)
 
@@ -50,7 +50,7 @@ export default async function ProtocolDetail({ params }: { params: { id: string 
 
 		for (const address of policyAddresses) {
 			try {
-				const policyContract = new ethers.Contract(address, policyAbi, getEthereumProvider())
+				const policyContract = new ethers.Contract(address, policyAbis.abi, getEthereumProvider())
 				policies.push({ address, name: await policyContract.name() })
 			} catch {}
 		}

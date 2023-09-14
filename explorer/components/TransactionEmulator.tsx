@@ -17,7 +17,7 @@ import { CheckCircle, Hourglass, Loader2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { FunctionFragment, ethers } from 'ethers'
 import { getKnownProtocol } from '@/data/knownProtocols'
-import { abi as protocolAbi } from '@/data/protocolAbis.json'
+import protocolAbis from '@/data/protocolAbis.json'
 import { getEthereumProvider } from '@/lib/ethers'
 import { EMPTY_CERT } from '@/data/constants'
 import { useAtomValue } from 'jotai/react'
@@ -32,7 +32,7 @@ const defaultSteps: { status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'; label: st
 	},
 	{
 		status: 'PENDING',
-		label: 'Generate Certificate on Blockless'
+		label: 'Generate Certificate'
 	}
 ]
 
@@ -61,7 +61,7 @@ export default function TransactionEmulator({
 	const protocol = getKnownProtocol(contractAddress)
 	const contract = new ethers.Contract(
 		contractAddress,
-		protocol ? protocol.abi : protocolAbi,
+		protocol ? protocol.abi : protocolAbis.abi,
 		provider
 	)
 

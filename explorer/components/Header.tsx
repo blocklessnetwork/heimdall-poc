@@ -14,7 +14,8 @@ export default function Header() {
 							<h2 className="text-lg font-semibold whitespace-nowrap">Heimdall</h2>
 						</Link>
 					</div>
-					<div>
+					<div className="flex gap-4 items-center">
+						<Link href="/guardians">Guardian Registry</Link>
 						<ConnectWallet />
 					</div>
 				</div>
