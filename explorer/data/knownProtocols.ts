@@ -1,7 +1,7 @@
-import { abi as sampleSwapAbi } from './sampleSwap.json'
+import sampleSwapAbis from './sampleSwap.json'
 
 export const knownProtocols = [
-	{ id: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9', name: 'Sample Swap', abi: sampleSwapAbi }
+	{ id: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9', name: 'Sample Swap', abi: sampleSwapAbis.abi }
 ]
 
 export function getKnownProtocol(id: string) {

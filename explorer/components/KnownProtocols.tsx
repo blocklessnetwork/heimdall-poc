@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from './ui/table'
 import { knownProtocols } from '@/data/knownProtocols'
 
@@ -21,8 +22,16 @@ export default async function KnownProtocols() {
 					<TableBody>
 						{protocols.map((a, i: number) => (
 							<TableRow key={i}>
-								<TableCell>{a.name}</TableCell>
-								<TableCell>{a.id}</TableCell>
+								<TableCell>
+									<Link className="block" href={`/protocol/${a.id}`}>
+										{a.name}
+									</Link>
+								</TableCell>
+								<TableCell>
+									<Link className="block" href={`/protocol/${a.id}`}>
+										{a.id}
+									</Link>
+								</TableCell>
 								<TableCell>0</TableCell>
 							</TableRow>
 						))}
