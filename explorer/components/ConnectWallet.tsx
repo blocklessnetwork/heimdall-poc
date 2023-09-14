@@ -30,6 +30,11 @@ export default function ConnectWallet() {
 		}
 	}, [address, blsRPC])
 
+	useEffect(() => {
+		setAddress(walletAddress)
+		setBlsRPC(walletBlsRPC)
+	}, [walletAddress, walletBlsRPC])
+
 	const handleSave = () => {
 		if (!isValid) return
 

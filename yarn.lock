@@ -7,12 +7,26 @@
   resolved "https://registry.npmjs.org/@assemblyscript/wasi-shim/-/wasi-shim-0.1.0.tgz"
   integrity sha512-fSLH7MdJHf2uDW5llA5VCF/CG62Jp2WkYGui9/3vIWs3jDhViGeQF7nMYLUjpigluM5fnq61I6obtCETy39FZw==
 
+"@babel/runtime@^7.22.6":
+  version "7.22.15"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
+  integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@blockless/sdk@^1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@blockless/sdk/-/sdk-1.1.2.tgz"
   integrity sha512-N7v4CXhLmKahStNUqhV1LG1HZpuk4wllAveMCYZv1N7iEYm5nek6d2s3pvuMLL/ui4hs9zQf0RmCn/XCAdvnmA==
   dependencies:
     as-wasi "^0.6.0"
+
+"@uiw/react-json-view@^1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@uiw/react-json-view/-/react-json-view-1.12.0.tgz#3a5291f2bdcd7f6dfc9941a568cdc2a4df61373c"
+  integrity sha512-aofqM1yV5SvChCx8cB0p3FZ2Fzpa0Ss4CU923kTU9FfGl20VbDK71+/NoqK4k7XX0KG3Gp1lLz1SIGA8+aYwHQ==
+  dependencies:
+    "@babel/runtime" "^7.22.6"
 
 abbrev@1:
   version "1.1.1"
@@ -230,6 +244,11 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+regenerator-runtime@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
+  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
 
 semver@^7.5.3:
   version "7.5.4"

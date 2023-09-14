@@ -14,7 +14,6 @@ import {
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { CheckCircle, Hourglass, Loader2 } from 'lucide-react'
-import { Textarea } from './ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { FunctionFragment, ethers } from 'ethers'
 import { getKnownProtocol } from '@/data/knownProtocols'
@@ -24,6 +23,7 @@ import { EMPTY_CERT } from '@/data/constants'
 import { useAtomValue } from 'jotai/react'
 import walletAtom from '@/atoms/wallet'
 import { generateComplianceCertificate } from '@/lib/cert'
+import JsonView from '@uiw/react-json-view'
 
 const defaultSteps: { status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'; label: string }[] = [
 	{
@@ -112,7 +112,6 @@ export default function TransactionEmulator({
 		const certificateData = contract.interface
 			.decodeFunctionData(selectedFn as string, txDataWithCertificate.data!)
 			.certificate.toObject()
-		certificateData.timestamp = certificateData.timestamp.toString()
 
 		// Update request, response and certificate data for display
 		setRequestData(txData)
@@ -204,22 +203,31 @@ export default function TransactionEmulator({
 												<TabsTrigger value="request">Request</TabsTrigger>
 											</TabsList>
 											<TabsContent value="certificate">
-												<Textarea
-													defaultValue={JSON.stringify(certificateData, null, 2)}
-													className="h-72"
-												/>
+												<div className="w-[450px] max-w-[450px] overflow-auto">
+													<JsonView
+														value={certificateData}
+														enableClipboard={false}
+														shortenTextAfterLength={0}
+													/>
+												</div>
 											</TabsContent>
 											<TabsContent value="response">
-												<Textarea
-													defaultValue={JSON.stringify(responseData, null, 2)}
-													className="h-72"
-												/>
+												<div className="w-[450px] max-w-[450px] overflow-auto">
+													<JsonView
+														value={responseData}
+														enableClipboard={false}
+														shortenTextAfterLength={0}
+													/>
+												</div>
 											</TabsContent>
 											<TabsContent value="request">
-												<Textarea
-													defaultValue={JSON.stringify(requestData, null, 2)}
-													className="h-72"
-												/>
+												<div className="w-[450px] max-w-[450px] overflow-auto">
+													<JsonView
+														value={requestData}
+														enableClipboard={false}
+														shortenTextAfterLength={0}
+													/>
+												</div>
 											</TabsContent>
 										</Tabs>
 									)}
